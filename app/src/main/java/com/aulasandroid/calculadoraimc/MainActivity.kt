@@ -5,6 +5,7 @@ import android.R.attr.label
 import android.R.attr.onClick
 import android.R.attr.text
 import android.R.attr.y
+import android.graphics.Color.red
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -87,21 +88,6 @@ fun CalculadoraIMCScreen(modifier: Modifier = Modifier) {
         mutableStateOf(0.0)
     }
 
-    fun calcularImc(altura: Double, peso: Double): Double{
-        var alturaMetros = altura / 100
-        var resultado = peso / (alturaMetros * alturaMetros)
-
-        return resultado
-    }
-
-    var classificacao = when {
-        imc in 0.0..18.4 -> "Abaixo do peso"
-        imc in 18.5..24.9 -> "peso ideial"
-        imc in 25.0..29.9 -> "Sobre peso"
-        imc in 30.0..34.9 -> "Obesidade I"
-        imc in 35.0..39.9 -> "Obesidade II"
-        else -> "Obesidade III"
-    }
 
 
 //    var calcularImc = altura * altura / peso
@@ -238,18 +224,21 @@ fun CalculadoraIMCScreen(modifier: Modifier = Modifier) {
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center
             ) {
-                Box(
+
+                Card(
                     modifier = Modifier
-                        .width(400.dp)
-                        .height(80.dp)
-                        .clip(RoundedCornerShape(14.dp))
-                        .background(Color(62, 148, 96, 255))
+                    .width(400.dp)
+                    .height(80.dp)
+                    .clip(RoundedCornerShape(14.dp)),
+                    colors = CardDefaults.cardColors(
+                        containerColor = definirCorCategoria(imc),
+                    )
                 ) {
 
-                     Text(text= "%.1f".format(imc))
+                    Text(text= "%.1f".format(imc))
                     Spacer(modifier = Modifier.height(10.dp))
                     Text(
-                        text = classificacao,
+                        text = definirCategoria(imc),
                         textAlign = TextAlign.Center,
                         fontSize = 24.sp,
                         fontWeight = FontWeight.Bold,
@@ -257,23 +246,6 @@ fun CalculadoraIMCScreen(modifier: Modifier = Modifier) {
                     )
                 }
 
-
-//                Button(
-//                    modifier = Modifier
-//                        .width(400.dp)
-//                        .height(80.dp),
-//                    onClick = {},
-//                    colors = ButtonDefaults.buttonColors(
-//                        containerColor = Color(62, 148, 96, 255),
-//                    ),
-//                    shape = RoundedCornerShape(14.dp)
-//                ) {
-//                    Text(
-//                        text = "Peso ideal",
-//                        fontSize = 24.sp,
-//                        fontWeight = FontWeight.Bold
-//                    )
-//                }
             }
 
 
